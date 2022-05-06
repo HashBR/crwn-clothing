@@ -1,6 +1,6 @@
-import { initializeApp } from 'firebase/app';
-import { getAuth , signInWithRedirect, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore'
+import { initializeApp } from "firebase/app";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -9,28 +9,29 @@ const firebaseConfig = {
   projectId: "crwn-clothing-db-f8bea",
   storageBucket: "crwn-clothing-db-f8bea.appspot.com",
   messagingSenderId: "502287111010",
-  appId: "1:502287111010:web:6d53925bdc783a5269523b"
+  appId: "1:502287111010:web:6d53925bdc783a5269523b",
 };
 
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 
-const provider = new GoogleAuthProvider();
-provider.setCustomParameters({
-  prompt: 'select_account'
+const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
+  prompt: "select_account",
 });
 
 export const auth = getAuth();
-export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+export const signInWithGooglePopup = () =>
+  signInWithPopup(auth, googleProvider);
 
 export const db = getFirestore();
 
 export const createUserDocumentFromAuth = async (userAuth) => {
-  const userDocRef = doc(db, 'users', userAuth.uid);
+  const userDocRef = doc(db, "users", userAuth.uid);
 
   const userSnapshot = await getDoc(userDocRef);
 
-  if(!userSnapshot.exists()) {
+  if (!userSnapshot.exists()) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
 
@@ -40,10 +41,9 @@ export const createUserDocumentFromAuth = async (userAuth) => {
         email,
         createdAt,
       });
-
-    }catch (error){
-      console.log('Error creating the user', error.message);
+    } catch (error) {
+      console.log("Error creating the user", error.message);
     }
   }
   return userDocRef;
-}
+};
