@@ -16,13 +16,11 @@ const SignInForm = () => {
   });
   const { email, password } = formFields;
 
-  // console.log(formFields);
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await signInAuthUserWithEmailAndPassword(
+      const { user } = await signInAuthUserWithEmailAndPassword(
         email,
         password
       );
@@ -51,23 +49,23 @@ const SignInForm = () => {
   };
 
   const signInWithGoogle = async () => {
-    const { user } = await signInWithGooglePopup();
-    await createUserDocumentFromAuth(user);
+    await signInWithGooglePopup();
   };
 
   return (
     <div className="sign-in-container">
       <h2>Already have an account?</h2>
-      <span>Sign in with your e-mail and password</span>
+      <span>Sign in with your email and password</span>
       <form onSubmit={handleSubmit}>
         <FormInput
-          label="E-mail"
+          label="Email"
           type="email"
           required
           onChange={handleChange}
           name="email"
           value={email}
         />
+
         <FormInput
           label="Password"
           type="password"
@@ -78,7 +76,7 @@ const SignInForm = () => {
         />
         <div className="buttons-container">
           <Button type="submit">Sign In</Button>
-          <Button type="button" buttonType="google" onClick={signInWithGoogle}>
+          <Button buttonType="google" type="button" onClick={signInWithGoogle}>
             Google Sign In
           </Button>
         </div>
